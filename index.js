@@ -26,6 +26,11 @@ function switchTab(clickedTab) {
             grantAccessContainer.classList.remove('active');
             searchForm.classList.add('active');
         }
+        else{
+         searchForm.classList.remove("active");
+         userInfoContainer.classList.remove("active");
+         getfromSessionStorage();
+        }
      }
 }
  userTab.addEventListener('click', () =>{
@@ -36,3 +41,31 @@ function switchTab(clickedTab) {
     switchTab(searchTab);
  });
 
+function getfromSessionStorage(){
+   const localCoordinates = sessionStorage.getItem("user-coordinates");
+   if(!localCoordinates) {
+      grantAccessContainer.classList.add("active");
+   }
+   else {
+      const coordinates = JSON.parse(localCoordinates);
+      fetchUserWeatherInfo(coordinates);
+   }
+}
+
+  async function fetchUserWeatherInfo(coordinates) {
+ const {lat, lon} = coordinates;
+ grantAccessContainer.classList.remove("active");
+ loadingScreen.classList.add("active");
+ try{
+     const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+     );
+     const data = await response.json();
+     loadingScreen.classList.remove("active");
+     userInfoContainer.classList.add("active");
+     renderWeatherInfo(data);
+ }
+ catch(err){
+  loadingScreen.classList.remove("active");
+ }
+}
