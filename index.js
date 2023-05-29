@@ -90,4 +90,23 @@ windspeed.innerText = weatherInfo?.wind?.speed;
 humidity.innerText = weatherInfo?.main?.humidity;
 cloudinees.innerText = weatherInfo?.clouds?.all;
 
+function getLocation() {
+   if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(showPosition);
+   }
+   else{
+      alert('Your Browser doesnt support realtime geolocation, Please update your browser');
+   }
+} 
+function showPosition(position) {
+   const userCoordinates = {
+      lat: position.coords.latitude,
+      lon: position.coords.longitude,
+   }
+   sessionStorage.setItem("user-coordinates", JSON.stringify(userCoordinates));
+   fetchUserWeatherInfo(userCoordinates);
 }
+}
+
+const grantAccessButton = document.querySelector("[data-grantAccess]");
+grantAccessButton.addEventListener("click", getLocation);
