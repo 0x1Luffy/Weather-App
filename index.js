@@ -69,3 +69,20 @@ function getfromSessionStorage(){
   loadingScreen.classList.remove("active");
  }
 }
+function renderWeatherInfo(weatherInfo) {
+   const cityName =  document.querySelector("[data-cityName]");
+   const countryIcon = document.querySelector("[data-countryIcon]");
+   const desc = document.querySelector("[data-weatherDesc]");
+   const weatherIcon = document.querySelector("[dta-weatherIcon]");
+   const temp = document.querySelector("[data-temp]");
+   const windspeed = document.querySelector("[data-windspeed]");
+   const humidity = document.querySelector("[data-humidity]");
+   const cloudineed =  document.querySelector("[data-cloudiness]");
+
+
+   cityName.innerText = weatherInfo?.name;
+   countryIcon.src = `https://flagcdn.com/144x108/${weatherInfo?.sys?.country.toLowerCase()}.png`;
+
+desc.innerText = weatherInfo?.weather?.[0]?.description;
+weatherIcon.src = `http://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`;
+}
